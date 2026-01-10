@@ -1,0 +1,85 @@
+{
+  "hash": "1b828f2e",
+  "configHash": "f96dd6ab",
+  "lockfileHash": "39bf8057",
+  "browserHash": "14908dea",
+  "optimized": {
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "1a9da96c",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.mjs",
+      "file": "react-router-dom.js",
+      "fileHash": "b09b7a79",
+      "needsInterop": false
+    },
+    "react-redux": {
+      "src": "../../node_modules/react-redux/dist/react-redux.mjs",
+      "file": "react-redux.js",
+      "fileHash": "d4122d70",
+      "needsInterop": false
+    },
+    "react-hot-toast": {
+      "src": "../../node_modules/react-hot-toast/dist/index.mjs",
+      "file": "react-hot-toast.js",
+      "fileHash": "2a8958e3",
+      "needsInterop": false
+    },
+    "@reduxjs/toolkit": {
+      "src": "../../node_modules/@reduxjs/toolkit/dist/redux-toolkit.modern.mjs",
+      "file": "@reduxjs_toolkit.js",
+      "fileHash": "955b7bf9",
+      "needsInterop": false
+    },
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "e0c4e8e9",
+      "needsInterop": true
+    },
+    "lucide-react": {
+      "src": "../../node_modules/lucide-react/dist/esm/lucide-react.js",
+      "file": "lucide-react.js",
+      "fileHash": "85246eea",
+      "needsInterop": false
+    },
+    "react-pdftotext": {
+      "src": "../../node_modules/react-pdftotext/dist/index.js",
+      "file": "react-pdftotext.js",
+      "fileHash": "13eb6826",
+      "needsInterop": true
+    },
+    "axios": {
+      "src": "../../node_modules/axios/index.js",
+      "file": "axios.js",
+      "fileHash": "985f4469",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "fs-EXGKXJFZ": {
+      "file": "fs-EXGKXJFZ.js"
+    },
+    "http-CDBGNV5A": {
+      "file": "http-CDBGNV5A.js"
+    },
+    "https-AHTDBHXR": {
+      "file": "https-AHTDBHXR.js"
+    },
+    "url-BY2ZCU5X": {
+      "file": "url-BY2ZCU5X.js"
+    },
+    "chunk-CYJK23RC": {
+      "file": "chunk-CYJK23RC.js"
+    },
+    "chunk-6VIQC2ON": {
+      "file": "chunk-6VIQC2ON.js"
+    },
+    "chunk-HXA6O6EE": {
+      "file": "chunk-HXA6O6EE.js"
+    }
+  }
+}
