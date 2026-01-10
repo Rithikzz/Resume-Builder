@@ -1,26 +1,58 @@
-import React from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
+import Layout from './pages/Layout'
 import Dashboard from './pages/Dashboard'
 import ResumeBuilder from './pages/ResumeBuilder'
 import Preview from './pages/Preview'
 import Login from './pages/Login'
-import Layout from './pages/Layout'
+import { useDispatch } from 'react-redux'
+import api from './configs/api'
+import { login, setLoading } from './app/features/authSlice'
+import {Toaster} from 'react-hot-toast'
 
-// App component with routing
 const App = () => {
+
+  const dispatch = useDispatch()
+
+  const getUserData = async () => {
+    const token = localStorage.getItem('token')
+    try {
+      if(token){
+        const { data } = await api.get('/api/users/data', {headers: {Authorization: token}})
+        if(data.user){
+          dispatch(login({token, user: data.user}))
+        }
+        dispatch(setLoading(false))
+      }else{
+        dispatch(setLoading(false))
+      }
+    } catch (error) {
+      dispatch(setLoading(false))
+      console.log(error.message)
+    }
+  }
+
+  useEffect(()=>{
+    getUserData()
+  },[])
+
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/app" element={<Layout />}>
-        <Route index element={<Navigate to="/app/dashboard" replace />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="builder/:resumeId" element={<ResumeBuilder />} />
-        <Route path="preview/:resumeId" element={<Preview />} />
-      </Route>
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+    <>
+    <Toaster />
+      <Routes>
+        <Route path='/' element={<Home />}/>
+        <Route path='/login' element={<Login />}/>
+
+        <Route path='app' element={<Layout />}>
+          <Route index element={<Dashboard />}/>
+          <Route path='builder/:resumeId' element={<ResumeBuilder />}/>
+        </Route>
+
+        <Route path='view/:resumeId' element={<Preview />}/>
+
+      </Routes>
+    </>
   )
 }
 
