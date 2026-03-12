@@ -1,0 +1,77 @@
+# ─── DocBuilder AI — Docker Compose ─────────────────────────────────────────
+#
+# Services:
+#   backend   — Node.js / Express API on internal port 3000
+#   frontend  — React build served by Nginx on host port 80
+#               Nginx also reverse-proxies /api/* → backend (internally)
+#
+# Usage:
+#   docker compose up --build          # first run
+#   docker compose up -d               # detached
+#   docker compose down                # stop + remove containers
+#   docker compose logs -f backend     # tail backend logs
+#   docker compose logs -f frontend    # tail nginx logs
+
+services:
+
+  # ── Backend ──────────────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: docbuilder-backend
+    restart: unless-stopped
+
+    # Load all secrets from server/.env (MongoDB URI, JWT, API keys, GitHub token)
+    env_file:
+      - ./server/.env
+
+    # Override CLIENT_URL so CORS accepts requests from the nginx frontend
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      # When running in Docker, the browser accesses the app via nginx on port 80.
+      # nginx proxies /api/* to backend, so Origin will be http://localhost.
+      CLIENT_URL: "http://localhost"
+
+    # Backend is NOT exposed on any host port.
+    # Only nginx (on the same internal network) can reach it.
+    expose:
+      - "3000"
+
+    networks:
+      - docbuilder
+
+    # Basic health check — retries 5 times before marking unhealthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ── Frontend ─────────────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        # Empty string → axios uses relative paths (/api/...) → nginx proxies them
+        VITE_BASE_URL: ""
+    container_name: docbuilder-frontend
+    restart: unless-stopped
+
+    ports:
+      - "80:80"          # App accessible at http://localhost
+
+    depends_on:
+      backend:
+        condition: service_healthy
+
+    networks:
+      - docbuilder
+
+# ── Internal network ─────────────────────────────────────────────────────────
+networks:
+  docbuilder:
+    driver: bridge
